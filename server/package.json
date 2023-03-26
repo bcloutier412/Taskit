@@ -1,0 +1,40 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend for task app",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "build:ui": "rm -rf build && cd ../client/ && npm run build && cp -r build ../server",
+    "deploy": "flyctl deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "flyctl logs",
+    "open": "flyctl open",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcloutier412/Taskit.git"
+  },
+  "author": "Dino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcloutier412/Taskit/issues"
+  },
+  "homepage": "https://github.com/bcloutier412/Taskit#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
+  }
+}
