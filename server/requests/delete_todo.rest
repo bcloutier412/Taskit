@@ -1,10 +1,7 @@
-POST http://localhost:3001/api/todo/todo
+DELETE http://localhost:3001/api/todo/todo
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpbm8xYzYiLCJpZCI6IjY0MjFkZmJhZDMzZGRiYjAxYTczMzk3MiIsImlhdCI6MTY3OTk1NTUzNywiZXhwIjoxNjc5OTU2MTM3fQ.pfppCsoASdQu1S3Eogzl-jU_2W2gMDvOs73bOxikAY0
 Content-Type: application/json
 
 {
-    "todo": {
-        "title": "School Project",
-        "description": "We need to finish our school project."
-    }
+    "todoID": "6422167b5b5a6f69fced14aa"
 }
