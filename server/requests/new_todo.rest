@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/todo/todo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpbm8xYzYiLCJpZCI6IjY0MjFkZmJhZDMzZGRiYjAxYTczMzk3MiIsImlhdCI6MTY3OTk0MzUxMiwiZXhwIjoxNjc5OTQ0MTEyfQ.R7Wl_-gNp4sbMBMvbTmG-YcW9S55Yv6U22m4M66Ot8E
+Content-Type: application/json
+
+{
+    "todo": {
+        "title": "School Project",
+        "description": "We need to finish our school project."
+    }
+}

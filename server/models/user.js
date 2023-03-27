@@ -11,14 +11,13 @@ const userSchema = new mongoose.Schema({
     todos: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Note",
+            ref: "Todo",
         },
     ],
 });
 
 userSchema.set('toJSON', {
     transform: (document, returnedObject) => {
-        console.log('here')
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v

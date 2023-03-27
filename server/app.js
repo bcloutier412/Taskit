@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 
 // Routes
 const userRouter = require('./controllers/user')
+const todoRouter = require('./controllers/todo')
 
 mongoose.set("strictQuery", false);
 
@@ -25,5 +26,6 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use("/api/user", userRouter);
+app.use("/api/todo", todoRouter);
 
 module.exports = app;
