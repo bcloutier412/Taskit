@@ -73,7 +73,7 @@ todoRouter.delete("/todo", verifyToken, async (request, response) => {
                 .status(400)
                 .send({ error: "Missing required data " });
 
-        const deletedTodo = await Todo.deleteOne({ _id: todoID });
+        const deletedTodo = await Todo.deleteOne({ _id: todoID, user: user.id });
         response.end()
     } catch (error) {
         console.log(error);
