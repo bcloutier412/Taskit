@@ -18,10 +18,9 @@ todoRouter.get("/todos", verifyToken, async (request, response) => {
                 .status(404)
                 .send({ error: "Request resulted in an error" });
         }
-        
+
         // Send back the todos
         return response.send(result.todos);
-
     } catch (error) {
         console.log(error);
         return response
@@ -30,11 +29,40 @@ todoRouter.get("/todos", verifyToken, async (request, response) => {
     }
 });
 
-todoRouter.post('/todo', verifyToken, (request, response) => {
-    console.log(request.body)
-    // The user will send the new note 
-    // user will also send authorization header
-})
+todoRouter.post("/todo", verifyToken, async (request, response) => {
+    try {
+        const { title, description } = request.body.todo;
+
+        if (!(title && description)) {
+            return response
+                .status(400)
+                .send({ error: "Missing required data " });
+        }
+        // Creating new note object for db
+        const todo = new Todo({
+            title,
+            description,
+            user: request.user.id,
+        });
+
+        const newTodo = await todo.save();
+
+        // Adding the new Note to the users profile
+        const updatedUser = await User.updateOne(
+            { _id: request.user.id },
+            { $push: { todos: newTodo.id } }
+        );
+
+        // Sending the new note back to the client
+        return response.status(200).send(newTodo);
+
+    } catch (error) {
+        console.log(error);
+        return response
+            .status(404)
+            .send({ error: "Request resulted in an error" });
+    }
+});
 // Add new note to database
 // Mark note as finished in database
 
