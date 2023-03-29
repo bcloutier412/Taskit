@@ -13,17 +13,13 @@ const verifyToken = (request, response, next) => {
     } catch (error) {
         if (error instanceof JWT.TokenExpiredError) {
             console.log("token expired");
-            return response.redirect("/login");
+            return response.status(401).send()
         } else if (error instanceof JWT.JsonWebTokenError) {
-            console.log('User must provide authorization');
-            return response
-                .status(401)
-                .send({ error: "User must provide authorization" });
+            console.log(error)
+            return response.status(401).send()
         } else {
             console.log(error);
-            return response
-                .status(404)
-                .send({ error: "Request resulted in an error" });
+            return response.status(401).send()
         }
     }
 };
