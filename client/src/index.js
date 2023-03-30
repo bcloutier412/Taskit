@@ -15,6 +15,7 @@ const router = createBrowserRouter([
       errorElement: <ErrorPage />,
       children: [
         {
+          // Redirect user to the homepage if they go to the base url
           path: "",
           loader: () => {
             return redirect("/home")
@@ -23,8 +24,8 @@ const router = createBrowserRouter([
         {
           path: "home",
           element: <Home />,
+          // Check if the user has a JWT token in localStorage
           loader: () => {
-            localStorage.setItem("currentUser", JSON.stringify({JWT: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpbm8xYyIsImlkIjoiNjQyMjE4ZTQyMTllMGQyNzZkZjE1MThhIiwiaWF0IjoxNjgwMTI2MzEzLCJleHAiOjE2ODAxMjY5MTN9.P438WFUT7kuAWTu-LRfVqTmZVG7vgJf5mVwjpmekSOM"}))
             const currentUser = JSON.parse(localStorage.getItem("currentUser"));
             if (!currentUser) {
               return redirect("/login")

@@ -4,6 +4,7 @@ const config = require("./utils/config.js");
 const logger = require("./utils/logger.js");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const { requestLogger } = require("./utils/middleware")
 
 // Routes
 const userRouter = require('./controllers/user')
@@ -25,6 +26,7 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 app.use("/api/user", userRouter);
 app.use("/api/todo", todoRouter);
 

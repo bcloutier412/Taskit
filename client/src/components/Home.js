@@ -14,14 +14,15 @@ const Home = () => {
                     "http://localhost:3001/api/todo/todos",
                     {
                         headers: {
-                            Authorization: `Bearer ${currentUser.JWT}`,
+                            Authorization: `Bearer ${currentUser.token}`,
                         },
                     }
                 );
                 console.log(data.data);
                 setTodos(data.data);
             } catch (error) {
-                navigate('/login')
+                localStorage.clear();
+                navigate("/login");
             }
         };
         getTodos();
@@ -29,7 +30,7 @@ const Home = () => {
     return (
         <div>
             {todos
-                ? todos.map((todo) => <div key={todo.id}>todo.title</div>)
+                ? todos.map((todo) => <div key={todo.id}>{todo.title}</div>)
                 : null}
         </div>
     );
