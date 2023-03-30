@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext, useNavigate, useLoaderData } from "react-router-dom";
+import { useNavigate, useLoaderData } from "react-router-dom";
 import axios from "axios";
 
 const Home = () => {
@@ -26,7 +26,7 @@ const Home = () => {
             }
         };
         getTodos();
-    }, []);
+    }, [currentUser.token, navigate]);
     return (
         <div>
             {todos
