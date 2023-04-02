@@ -53,7 +53,7 @@ const Login = () => {
                 className="grid place-items-center mx-2 my-20 sm:my-auto"
                 x-data="{ showPass: true }"
             >
-                <h1 className="text-white text-4xl mb-5">Taskit</h1>
+                <h1 className="text-white text-4xl mb-5 tracking-widest">Taskit</h1>
                 <div
                     class="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12
                 px-6 py-10 sm:px-10 sm:py-6
