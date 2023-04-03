@@ -35,7 +35,9 @@ const Home = () => {
     //     : null}
     return (
         <div>
-            <header></header>
+            <header>{todos
+                    ? todos.map((todo) => <div key={todo.id}>{todo.title}</div>)
+                    : null}</header>
         </div>
     );
 };
