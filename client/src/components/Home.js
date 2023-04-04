@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLoaderData } from "react-router-dom";
 import axios from "axios";
+import { TailSpin } from "react-loading-icons";
 
 const Home = () => {
     // Getting user data from local storage processed in the loader function
@@ -41,7 +42,7 @@ const Home = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         width="32"
                         height="32"
-                        className="bi bi-plus-circle-fill hover:cursor-pointer fill-blue-500"
+                        className="bi bi-plus-circle-fill hover:cursor-pointer fill-blue-500 active:fill-blue-800"
                         viewBox="0 0 16 16"
                         onClick={() => {
                             setShowAddTask(true);
@@ -58,34 +59,63 @@ const Home = () => {
                         : null}
                 </div>
             </div>
-            {showAddTask && <NewTask setShowAddTask={setShowAddTask}/>}
+            {showAddTask && (
+                <NewTask
+                    setShowAddTask={setShowAddTask}
+                    currentUser={currentUser}
+                />
+            )}
         </div>
     );
 };
 
-const NewTask = ({ setShowAddTask }) => {
-    const [inputs, setInputs] = useState({ taskname: "", description: ""})
+const NewTask = ({ setShowAddTask, currentUser }) => {
+    const [inputs, setInputs] = useState({ taskname: "", description: "" });
     const [loading, setLoading] = useState(false);
 
     const handleChange = (event) => {
-        const value = event.target.value
+        const value = event.target.value;
         setInputs({
             ...inputs,
-            [event.target.name]: value
-        })
-    }
+            [event.target.name]: value,
+        });
+    };
 
-    const onSubmit = (event, otherparam) => {
-        event.preventDefault();
-        console.log(otherparam)
-        setShowAddTask(false);
+    const onSubmit = async (event) => {
+        try {
+            event.preventDefault();
+            setLoading(true);
+            const data = await axios.post(
+                "http://localhost:3001/api/todo/todo",
+                {
+                    todo: {
+                        title: inputs["taskname"],
+                        description: inputs["description"],
+                    },
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${currentUser.token}`,
+                    },
+                }
+            );
+            console.log(data);
+        } catch (error) {}
+        // make api call to add the new note to the database
+        // wait for response
+        // when response comes add todo to todo list
+        // close show task container
+        // setShowAddTask(false);
     };
 
     return (
         <div className="absolute h-full w-full flex justify-center bg-slate-500/50">
-            <div className="w-full max-w-lg bg-white sm:rounded-lg rounded-none border h-min p-5 text-center mt-5">
+            <div className="w-full max-w-lg bg-white sm:rounded-lg rounded-none border h-min p-5 text-center mt-12">
                 <h1 className="font-semibold">New Task</h1>
-                <form className="flex flex-col" onSubmit={(event) => onSubmit(event, "here")}>
+                <form
+                    className="flex flex-col"
+                    onSubmit={(event) => onSubmit(event)}
+                >
                     <input
                         type="text"
                         name="taskname"
@@ -104,11 +134,20 @@ const NewTask = ({ setShowAddTask }) => {
                         value={inputs["description"]}
                         onChange={handleChange}
                     ></textarea>
-                    <input
+                    <button
                         type="submit"
-                        value="Add Task"
                         className="bg-blue-500 text-white border my-1 px-2 py-1 rounded-lg  hover:cursor-pointer active:bg-blue-800"
-                    />
+                    >
+                        {loading ? (
+                            <TailSpin
+                                className="h-6 w-6 mx-auto"
+                                stroke="#fff"
+                                speed={0.75}
+                            />
+                        ) : (
+                            "Add task"
+                        )}
+                    </button>
                 </form>
             </div>
         </div>
