@@ -69,8 +69,8 @@ const Home = () => {
                 <footer className="px-10 py-5 text-2xl flex border-t justify-end">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
+                        width="30"
+                        height="30"
                         className="bi bi-box-arrow-right hover:cursor-pointer fill-blue-500 active:fill-blue-800"
                         viewBox="0 0 16 16"
                         onClick={handleLogout}
@@ -201,11 +201,22 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
 
 const Todo = ({ todo }) => {
     return (
-        <div className="wrapper border-b p-5 pl-0">
-            <div className="flex">
-                <button className="shrink-0">[ ]</button>
-                <div className="grow truncate font-semibold text-lg">{todo.title}</div>
-                <button className="justify-self-end">delete</button>
+        <div className="wrapper border-b py-5">
+            <div className="flex flex-col">
+                <div className="flex">
+                    <button className="shrink-0">[ ]</button>
+                    <header className="grow truncate font-semibold text-lg">
+                        {todo.title}
+                    </header>
+                </div>
+                <div className="flex justify-between items-end">
+                    <p>
+                        {todo.description}
+                    </p>
+                    <button className="justify-self-end px-1 border border-red-600 bg-red-400 rounded-lg text-white h-min">
+                        delete
+                    </button>
+                </div>
             </div>
         </div>
     );
