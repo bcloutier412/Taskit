@@ -11,6 +11,10 @@ const Home = () => {
     const [todos, setTodos] = useState(null);
     let navigate = useNavigate();
 
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate("/login");
+    };
     // Fetching the todos from the database
     useEffect(() => {
         const getTodos = async () => {
@@ -34,8 +38,9 @@ const Home = () => {
 
     return (
         <div className="wrapper w-full h-full flex justify-center">
-            <div className="container max-w-2xl">
-                <nav className="flex justify-between px-10 py-5 border-b">
+            <div className="container max-w-2xl flex flex-col h-full">
+                {/* NavBar */}
+                <nav className="flex justify-between px-10 py-5 border-b h-min">
                     <header className="text-2xl font-semibold">Tasks</header>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -50,14 +55,39 @@ const Home = () => {
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                     </svg>
                 </nav>
-                <div className="px-10 py-5">
+
+                {/* Todo list */}
+                <div className="px-10 h-full overflow-y-scroll">
                     {todos
                         ? todos.map((todo) => (
-                              <div key={todo.id}>{todo.title}</div>
+                              <Todo key={todo.id} todo={todo} />
                           ))
                         : null}
                 </div>
+
+                {/* Footer with logout button */}
+                <footer className="px-10 py-5 text-2xl flex border-t justify-end">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        className="bi bi-box-arrow-right hover:cursor-pointer fill-blue-500 active:fill-blue-800"
+                        viewBox="0 0 16 16"
+                        onClick={handleLogout}
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
+                        />
+                        <path
+                            fillRule="evenodd"
+                            d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+                        />
+                    </svg>
+                </footer>
             </div>
+
+            {/* Shows the new task menu when the plus sign is clicked */}
             {showAddTask && (
                 <NewTask
                     setShowAddTask={setShowAddTask}
@@ -74,7 +104,6 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     const [inputs, setInputs] = useState({ taskname: "", description: "" });
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
-
 
     const handleChange = (event) => {
         const value = event.target.value;
@@ -113,23 +142,25 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     return (
         <div className="wrapper absolute h-full w-full flex justify-center bg-slate-500/50">
             <div className="relative w-full max-w-lg bg-white sm:rounded-lg rounded-none border h-min p-5 text-center mt-12">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-x-lg absolute top-2 right-2 hover:cursor-pointer"
-                        viewBox="0 0 16 16"
-                        onClick={() => setShowAddTask(false)}
-                    >
-                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                    </svg>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-x-lg absolute top-2 right-2 hover:cursor-pointer"
+                    viewBox="0 0 16 16"
+                    onClick={() => setShowAddTask(false)}
+                >
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                </svg>
                 <h1 className="font-semibold">New Task</h1>
                 <form
                     className="flex flex-col"
                     onSubmit={(event) => onSubmit(event)}
                 >
-                {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+                    {errorMessage && (
+                        <div className="text-red-500">{errorMessage}</div>
+                    )}
                     <input
                         type="text"
                         name="taskname"
@@ -163,6 +194,18 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
                         )}
                     </button>
                 </form>
+            </div>
+        </div>
+    );
+};
+
+const Todo = ({ todo }) => {
+    return (
+        <div className="wrapper border-b p-5 pl-0">
+            <div className="flex">
+                <button className="shrink-0">[ ]</button>
+                <div className="grow truncate font-semibold text-lg">{todo.title}</div>
+                <button className="justify-self-end">delete</button>
             </div>
         </div>
     );
