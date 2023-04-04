@@ -10,11 +10,6 @@ const Home = () => {
     const [todos, setTodos] = useState(null);
     let navigate = useNavigate();
 
-    const onSubmit = (event, otherparam) => {
-        event.preventDefault();
-        console.log(otherparam)
-        setShowAddTask(false);
-    };
     // Fetching the todos from the database
     useEffect(() => {
         const getTodos = async () => {
@@ -46,8 +41,7 @@ const Home = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         width="32"
                         height="32"
-                        fill="#f66b0e"
-                        className="bi bi-plus-circle-fill hover:cursor-pointer"
+                        className="bi bi-plus-circle-fill hover:cursor-pointer fill-blue-500"
                         viewBox="0 0 16 16"
                         onClick={() => {
                             setShowAddTask(true);
@@ -64,13 +58,14 @@ const Home = () => {
                         : null}
                 </div>
             </div>
-            {showAddTask && <NewTask onSubmit={onSubmit}/>}
+            {showAddTask && <NewTask setShowAddTask={setShowAddTask}/>}
         </div>
     );
 };
 
-const NewTask = ({ onSubmit }) => {
+const NewTask = ({ setShowAddTask }) => {
     const [inputs, setInputs] = useState({ taskname: "", description: ""})
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (event) => {
         const value = event.target.value
@@ -79,6 +74,13 @@ const NewTask = ({ onSubmit }) => {
             [event.target.name]: value
         })
     }
+
+    const onSubmit = (event, otherparam) => {
+        event.preventDefault();
+        console.log(otherparam)
+        setShowAddTask(false);
+    };
+
     return (
         <div className="absolute h-full w-full flex justify-center bg-slate-500/50">
             <div className="w-full max-w-lg bg-white sm:rounded-lg rounded-none border h-min p-5 text-center mt-5">
