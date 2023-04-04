@@ -15,7 +15,7 @@ const Home = () => {
     useEffect(() => {
         const getTodos = async () => {
             try {
-                const data = await axios.get(
+                const response = await axios.get(
                     "http://localhost:3001/api/todo/todos",
                     {
                         headers: {
@@ -23,8 +23,7 @@ const Home = () => {
                         },
                     }
                 );
-                console.log(data.data);
-                setTodos(data.data);
+                setTodos(response.data);
             } catch (error) {
                 localStorage.clear();
                 navigate("/login");
@@ -63,13 +62,15 @@ const Home = () => {
                 <NewTask
                     setShowAddTask={setShowAddTask}
                     currentUser={currentUser}
+                    todos={todos}
+                    setTodos={setTodos}
                 />
             )}
         </div>
     );
 };
 
-const NewTask = ({ setShowAddTask, currentUser }) => {
+const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     const [inputs, setInputs] = useState({ taskname: "", description: "" });
     const [loading, setLoading] = useState(false);
 
@@ -85,7 +86,7 @@ const NewTask = ({ setShowAddTask, currentUser }) => {
         try {
             event.preventDefault();
             setLoading(true);
-            const data = await axios.post(
+            const response = await axios.post(
                 "http://localhost:3001/api/todo/todo",
                 {
                     todo: {
@@ -99,7 +100,8 @@ const NewTask = ({ setShowAddTask, currentUser }) => {
                     },
                 }
             );
-            console.log(data);
+            setTodos(todos.concat(response.data))
+            setShowAddTask(false);
         } catch (error) {}
         // make api call to add the new note to the database
         // wait for response
