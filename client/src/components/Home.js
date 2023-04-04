@@ -73,6 +73,8 @@ const Home = () => {
 const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     const [inputs, setInputs] = useState({ taskname: "", description: "" });
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+
 
     const handleChange = (event) => {
         const value = event.target.value;
@@ -104,13 +106,8 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
             setShowAddTask(false);
         } catch (error) {
             setLoading(false);
-            console.log(error);
+            setErrorMessage(error.response.data.error);
         }
-        // make api call to add the new note to the database
-        // wait for response
-        // when response comes add todo to todo list
-        // close show task container
-        // setShowAddTask(false);
     };
 
     return (
@@ -132,6 +129,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
                     className="flex flex-col"
                     onSubmit={(event) => onSubmit(event)}
                 >
+                {errorMessage && <div className="text-red-500">{errorMessage}</div>}
                     <input
                         type="text"
                         name="taskname"
