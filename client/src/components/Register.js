@@ -82,7 +82,15 @@ const Login = () => {
                         value="Sign up"
                     />
                 </form>
-                <footer className="mt-5">Already have an account? <span className="hover:cursor-pointer text-blue-500" onClick={() => navigate("/login")}>Log in</span></footer>
+                <footer className="mt-5">
+                    Already have an account?{" "}
+                    <span
+                        className="hover:cursor-pointer text-blue-500"
+                        onClick={() => navigate("/login")}
+                    >
+                        Log in
+                    </span>
+                </footer>
             </div>
         </div>
     );

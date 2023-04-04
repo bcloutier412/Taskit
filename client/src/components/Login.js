@@ -69,7 +69,15 @@ const Login = () => {
                         value="Login"
                     />
                 </form>
-                <footer className="mt-5">Need an account? <span className="hover:cursor-pointer text-blue-500" onClick={() => navigate("/register")}>Sign up</span></footer>
+                <footer className="mt-5">
+                    Need an account?{" "}
+                    <span
+                        className="hover:cursor-pointer text-blue-500"
+                        onClick={() => navigate("/register")}
+                    >
+                        Sign up
+                    </span>
+                </footer>
             </div>
         </div>
     );

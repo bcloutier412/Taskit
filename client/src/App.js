@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
+import React from "react";
 // import { useState } from 'react'
 import "./App.css";
 
 function App() {
     return (
-        <div>
+        <React.Fragment>
             <Outlet />
-        </div>
+        </React.Fragment>
     );
 }
 
