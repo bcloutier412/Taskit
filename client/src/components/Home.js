@@ -100,9 +100,12 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
                     },
                 }
             );
-            setTodos(todos.concat(response.data))
+            setTodos(todos.concat(response.data));
             setShowAddTask(false);
-        } catch (error) {}
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+        }
         // make api call to add the new note to the database
         // wait for response
         // when response comes add todo to todo list
@@ -111,8 +114,21 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     };
 
     return (
-        <div className="absolute h-full w-full flex justify-center bg-slate-500/50">
-            <div className="w-full max-w-lg bg-white sm:rounded-lg rounded-none border h-min p-5 text-center mt-12">
+        <div className="wrapper absolute h-full w-full flex justify-center bg-slate-500/50">
+            <div className="relative w-full max-w-lg bg-white sm:rounded-lg rounded-none border h-min p-5 text-center mt-12">
+                <div>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-x-lg absolute top-2 right-2 hover:cursor-pointer"
+                        viewBox="0 0 16 16"
+                        onClick={() => setShowAddTask(false)}
+                    >
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                    </svg>
+                </div>
                 <h1 className="font-semibold">New Task</h1>
                 <form
                     className="flex flex-col"
