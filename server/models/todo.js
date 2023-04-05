@@ -6,6 +6,7 @@ const todoSchema = new mongoose.Schema({
         required: true,
     },
     description: String,
+    finished: Boolean,
     user: String,
 });
 

@@ -42,6 +42,7 @@ todoRouter.post("/todo", verifyToken, async (request, response) => {
         const todo = new Todo({
             title,
             description,
+            finished: false,
             user: request.user.id,
         });
 

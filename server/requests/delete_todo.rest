@@ -1,7 +1,7 @@
 DELETE http://localhost:3001/api/todo/todo
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpbm8xYyIsImlkIjoiNjQyMjE4ZTQyMTllMGQyNzZkZjE1MThhIiwiaWF0IjoxNjc5OTU2NTM0LCJleHAiOjE2Nzk5NTcxMzR9.QYnh-cofSuDdeDafU90ddRrBEuenc7_cCmq3rWFKppQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpbm8xYyIsImlkIjoiNjQyMjE4ZTQyMTllMGQyNzZkZjE1MThhIiwiaWF0IjoxNjgwNjg4MTQ5LCJleHAiOjE2ODA2ODg3NDl9.AlG4anBxkJyG0ZJTY90hBlvtRx1YBHR1M9EF74l1v9U
 Content-Type: application/json
 
 {
-    "todoID": "642219febff34ef88c665488"
+    "todoID": "642d235a5f8ce40ed7dfdcf1"
 }

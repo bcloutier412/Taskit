@@ -60,7 +60,11 @@ const Home = () => {
                 <div className="px-10 h-full overflow-y-scroll">
                     {todos
                         ? todos.map((todo) => (
-                              <Todo key={todo.id} todo={todo} />
+                              <Todo
+                                  key={todo.id}
+                                  todo={todo}
+                                  currentUser={currentUser}
+                              />
                           ))
                         : null}
                 </div>
@@ -199,21 +203,61 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     );
 };
 
-const Todo = ({ todo }) => {
+const Todo = ({ todo, currentUser }) => {
+    const handleDelete = async () => {
+        const response = await axios.delete(
+            "http://localhost:3001/api/todo/todo",
+            {
+                headers: {
+                    Authorization: `Bearer ${currentUser.token}`,
+                },
+                data: {
+                    todoID: todo
+                }
+            }
+        );
+        console.log(response);
+    };
     return (
         <div className="wrapper border-b py-5">
             <div className="flex flex-col">
                 <div className="flex">
-                    <button className="shrink-0">[ ]</button>
-                    <header className="grow truncate font-semibold text-lg">
+                    <button className="shrink-0">
+                        {todo.finished ? (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                className="bi bi-check-circle"
+                                viewBox="0 0 16 16"
+                            >
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                            </svg>
+                        ) : (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                className="bi bi-circle"
+                                viewBox="0 0 16 16"
+                            >
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            </svg>
+                        )}
+                    </button>
+                    <header className="grow truncate font-semibold text-lg pl-2">
                         {todo.title}
                     </header>
                 </div>
                 <div className="flex justify-between items-end">
-                    <p>
-                        {todo.description}
-                    </p>
-                    <button className="justify-self-end px-1 border border-red-600 bg-red-400 rounded-lg text-white h-min">
+                    <p>{todo.description}</p>
+                    <button
+                        className="justify-self-end px-1 border border-red-600 bg-red-400 rounded-lg text-white h-min"
+                        onClick={handleDelete}
+                    >
                         delete
                     </button>
                 </div>
