@@ -74,8 +74,11 @@ todoRouter.delete("/todo", verifyToken, async (request, response) => {
                 .status(400)
                 .send({ error: "Missing required data " });
 
-        const deletedTodo = await Todo.deleteOne({ _id: todoID, user: user.id });
-        response.end()
+        const deletedTodo = await Todo.deleteOne({
+            _id: todoID,
+            user: user.id,
+        });
+        response.end();
     } catch (error) {
         console.log(error);
         return response
@@ -84,4 +87,16 @@ todoRouter.delete("/todo", verifyToken, async (request, response) => {
     }
 });
 
+todoRouter.put("/todo", verifyToken, async (request, response) => {
+    try {
+        const user = request.user;
+        const { todoID, isFinished } = request.body;
+        await Todo.updateOne({ _id: todoID }, { $set: { finished: isFinished } });
+    } catch (error) {
+        console.log(error);
+        return response
+            .status(404)
+            .send({ error: "Request resulted in an error" });
+    }
+});
 module.exports = todoRouter;

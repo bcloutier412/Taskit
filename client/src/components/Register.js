@@ -32,7 +32,7 @@ const Login = () => {
 
             // Requesting server for JWT with login info
             const response = await axios.post(
-                "http://localhost:3001/api/user/register",
+                "http://192.168.1.30:3001/api/user/register",
                 data,
                 { headers }
             );

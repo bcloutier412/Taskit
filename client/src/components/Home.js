@@ -20,7 +20,7 @@ const Home = () => {
         const getTodos = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost:3001/api/todo/todos",
+                    "http://192.168.1.30:3001/api/todo/todos",
                     {
                         headers: {
                             Authorization: `Bearer ${currentUser.token}`,
@@ -57,13 +57,15 @@ const Home = () => {
                 </nav>
 
                 {/* Todo list */}
-                <div className="px-10 h-full overflow-y-scroll">
+                <div className="md:px-10 h-full overflow-y-scroll">
                     {todos
                         ? todos.map((todo) => (
                               <Todo
                                   key={todo.id}
                                   todo={todo}
                                   currentUser={currentUser}
+                                  todos={todos}
+                                  setTodos={setTodos}
                               />
                           ))
                         : null}
@@ -122,7 +124,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
             event.preventDefault();
             setLoading(true);
             const response = await axios.post(
-                "http://localhost:3001/api/todo/todo",
+                "http://192.168.1.30:3001/api/todo/todo",
                 {
                     todo: {
                         title: inputs["taskname"],
@@ -203,34 +205,42 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     );
 };
 
-const Todo = ({ todo, currentUser }) => {
-    const handleDelete = async () => {
-        const response = await axios.delete(
-            "http://localhost:3001/api/todo/todo",
-            {
-                headers: {
-                    Authorization: `Bearer ${currentUser.token}`,
-                },
-                data: {
-                    todoID: todo
-                }
-            }
+const Todo = ({ todo, currentUser, todos, setTodos }) => {
+    const [isFinished, setIsFinished] = useState(todo.finished);
+    const handleDelete = () => {
+        axios.delete("http://192.168.1.30:3001/api/todo/todo", {
+            headers: {
+                Authorization: `Bearer ${currentUser.token}`,
+            },
+            data: {
+                todoID: todo.id,
+                isFinished: !isFinished,
+            },
+        });
+        setTodos(todos.filter((element) => element.id !== todo.id));
+    };
+    const handleFinishedClick = () => {
+        axios.put(
+            "http://192.168.1.30:3001/api/todo/todo",
+            { todoID: todo.id, isFinished: !isFinished },
+            { headers: { Authorization: `Bearer ${currentUser.token}` } }
         );
-        console.log(response);
+        setIsFinished(!isFinished);
     };
     return (
-        <div className="wrapper border-b py-5">
+        <div className="wrapper border-b py-5 px-10">
             <div className="flex flex-col">
                 <div className="flex">
                     <button className="shrink-0">
-                        {todo.finished ? (
+                        {isFinished ? (
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
                                 height="16"
                                 fill="currentColor"
-                                className="bi bi-check-circle"
+                                className="bi bi-check-circle fill-blue-500"
                                 viewBox="0 0 16 16"
+                                onClick={handleFinishedClick}
                             >
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                 <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
@@ -243,6 +253,7 @@ const Todo = ({ todo, currentUser }) => {
                                 fill="currentColor"
                                 className="bi bi-circle"
                                 viewBox="0 0 16 16"
+                                onClick={handleFinishedClick}
                             >
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                             </svg>
