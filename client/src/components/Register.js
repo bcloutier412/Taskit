@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { TailSpin } from "react-loading-icons";
 
 const Login = () => {
     const [inputs, setInputs] = useState({
@@ -8,7 +9,10 @@ const Login = () => {
         password: "",
         name: "",
     });
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
+
     const handleChange = (event) => {
         const value = event.target.value;
         setInputs({
@@ -19,6 +23,7 @@ const Login = () => {
 
     const onSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
         try {
             const data = {
                 username: inputs["username"],
@@ -32,7 +37,7 @@ const Login = () => {
 
             // Requesting server for JWT with login info
             const response = await axios.post(
-                "http://192.168.1.30:3001/api/user/register",
+                "/api/user/register",
                 data,
                 { headers }
             );
@@ -43,7 +48,8 @@ const Login = () => {
             // Navigating to Home
             navigate("/home");
         } catch (error) {
-            console.log(error);
+            setErrorMessage(error.response.data.error);
+            setLoading(false);
         }
     };
 
@@ -51,6 +57,9 @@ const Login = () => {
         <div className="wrapper max-w-xl h-30 mx-auto mt-32 p-5 md:p-10">
             <div className="container bg-white border rounded-lg p-5 md:p-10">
                 <header className="text-center mb-5 text-2xl">Taskit</header>
+                {errorMessage && (
+                    <div className="text-red-500 text-center">{errorMessage}</div>
+                )}
                 <form className="flex flex-col" onSubmit={onSubmit}>
                     <input
                         type="text"
@@ -76,11 +85,20 @@ const Login = () => {
                         value={inputs["password"]}
                         onChange={handleChange}
                     />
-                    <input
+                    <button
                         type="submit"
                         className="bg-blue-500 text-white border my-1 px-2 py-1 rounded-lg  hover:cursor-pointer active:bg-blue-800"
-                        value="Sign up"
-                    />
+                    >
+                        {loading ? (
+                            <TailSpin
+                                className="h-6 w-6 mx-auto"
+                                stroke="#fff"
+                                speed={0.75}
+                            />
+                        ) : (
+                            "Login"
+                        )}
+                    </button>
                 </form>
                 <footer className="mt-5">
                     Already have an account?{" "}

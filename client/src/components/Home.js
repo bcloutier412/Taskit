@@ -20,7 +20,7 @@ const Home = () => {
         const getTodos = async () => {
             try {
                 const response = await axios.get(
-                    "http://192.168.1.30:3001/api/todo/todos",
+                    "/api/todo/todos",
                     {
                         headers: {
                             Authorization: `Bearer ${currentUser.token}`,
@@ -28,6 +28,7 @@ const Home = () => {
                     }
                 );
                 setTodos(response.data);
+                console.log(response.data)
             } catch (error) {
                 localStorage.clear();
                 navigate("/login");
@@ -59,7 +60,7 @@ const Home = () => {
                 {/* Todo list */}
                 <div className="md:px-10 h-full overflow-y-scroll">
                     {todos
-                        ? todos.map((todo) => (
+                        && todos.length > 0 ? todos.map((todo) => (
                               <Todo
                                   key={todo.id}
                                   todo={todo}
@@ -67,8 +68,8 @@ const Home = () => {
                                   todos={todos}
                                   setTodos={setTodos}
                               />
-                          ))
-                        : null}
+                          )) : <div className="text-center h-full text-gray-500 text-lg flex items-center justify-center">Add a task</div>
+                        }
                 </div>
 
                 {/* Footer with logout button */}
@@ -124,7 +125,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
             event.preventDefault();
             setLoading(true);
             const response = await axios.post(
-                "http://192.168.1.30:3001/api/todo/todo",
+                "/api/todo/todo",
                 {
                     todo: {
                         title: inputs["taskname"],
@@ -208,7 +209,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
 const Todo = ({ todo, currentUser, todos, setTodos }) => {
     const [isFinished, setIsFinished] = useState(todo.finished);
     const handleDelete = () => {
-        axios.delete("http://192.168.1.30:3001/api/todo/todo", {
+        axios.delete("/api/todo/todo", {
             headers: {
                 Authorization: `Bearer ${currentUser.token}`,
             },
@@ -221,7 +222,7 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
     };
     const handleFinishedClick = () => {
         axios.put(
-            "http://192.168.1.30:3001/api/todo/todo",
+            "/api/todo/todo",
             { todoID: todo.id, isFinished: !isFinished },
             { headers: { Authorization: `Bearer ${currentUser.token}` } }
         );
