@@ -124,6 +124,12 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
         try {
             event.preventDefault();
             setLoading(true);
+            // Checks to make sure the user didn't only input white space
+            if (!(inputs["taskname"].replace(/\s/g, "") && (inputs["description"].replace(/\s/g, "")))) {
+                setErrorMessage("Missing Required Data");
+                setLoading(false);
+                return;
+            }
             const response = await axios.post(
                 "/api/todo/todo",
                 {

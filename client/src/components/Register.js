@@ -25,6 +25,11 @@ const Login = () => {
         event.preventDefault();
         setLoading(true);
         try {
+            if (!(inputs["username"].replace(/\s/g, "") && inputs["password"].replace(/\s/g, "") && inputs["name"].replace(/\s/g, ""))) {
+                setErrorMessage("Missing required data");
+                setLoading(false);
+                return;
+            }
             const data = {
                 username: inputs["username"],
                 password: inputs["password"],

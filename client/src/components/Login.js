@@ -21,6 +21,13 @@ const Login = () => {
         event.preventDefault();
         setLoading(true);
         try {
+            // Checks to make sure the user didn't only input white space
+            if (!(inputs["username"].replace(/\s/g, "") && (inputs["password"].replace(/\s/g, "")))) {
+                setErrorMessage("Invalid username or password");
+                setLoading(false);
+                return;
+            }
+
             const data = {
                 username: inputs["username"],
                 password: inputs["password"],
