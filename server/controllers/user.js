@@ -8,7 +8,7 @@ userRouter.post("/register", async (request, response) => {
     const { username, name, password } = request.body;
 
     // Check to make sure the user sent a username, password, and name
-    if (!(username && password && name))
+    if (!(username.replace(/\s/g, "") && password.replace(/\s/g, "") && name.replace(/\s/g, "")))
         return response.status(400).send({ error: "Missing required data " });
 
     try {
@@ -48,7 +48,7 @@ userRouter.post("/login", async (request, response) => {
     const { username, password } = request.body;
 
     // Check to make sure the client sent a username and password
-    if (!(username && password))
+    if (!(username.replace(/\s/g, "") && password.replace(/\s/g, "")))
         return response.status(400).send({ error: "Missing required data " });
 
     try {

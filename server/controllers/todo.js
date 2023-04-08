@@ -33,7 +33,7 @@ todoRouter.post("/todo", verifyToken, async (request, response) => {
     try {
         const { title, description } = request.body.todo;
 
-        if (!(title && description)) {
+        if (!(title.replace(/\s/g, "") && description.replace(/\s/g, ""))) {
             return response
                 .status(400)
                 .send({ error: "Missing required data " });
@@ -91,6 +91,12 @@ todoRouter.put("/todo", verifyToken, async (request, response) => {
     try {
         const user = request.user;
         const { todoID, isFinished } = request.body;
+
+        if (!(todoID && isFinished))
+            return response
+                .status(400)
+                .send({ error: "Missing required data " });
+
         await Todo.updateOne({ _id: todoID }, { $set: { finished: isFinished } });
     } catch (error) {
         console.log(error);

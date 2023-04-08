@@ -19,16 +19,13 @@ const Home = () => {
     useEffect(() => {
         const getTodos = async () => {
             try {
-                const response = await axios.get(
-                    "/api/todo/todos",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${currentUser.token}`,
-                        },
-                    }
-                );
+                const response = await axios.get("/api/todo/todos", {
+                    headers: {
+                        Authorization: `Bearer ${currentUser.token}`,
+                    },
+                });
                 setTodos(response.data);
-                console.log(response.data)
+                console.log(response.data);
             } catch (error) {
                 localStorage.clear();
                 navigate("/login");
@@ -59,17 +56,31 @@ const Home = () => {
 
                 {/* Todo list */}
                 <div className="md:px-10 h-full overflow-y-scroll">
-                    {todos
-                        && todos.length > 0 ? todos.map((todo) => (
-                              <Todo
-                                  key={todo.id}
-                                  todo={todo}
-                                  currentUser={currentUser}
-                                  todos={todos}
-                                  setTodos={setTodos}
-                              />
-                          )) : <div className="text-center h-full text-gray-500 text-lg flex items-center justify-center">Add a task</div>
-                        }
+                    {todos ? (
+                        todos.length > 0 ? (
+                            todos.map((todo) => (
+                                <Todo
+                                    key={todo.id}
+                                    todo={todo}
+                                    currentUser={currentUser}
+                                    todos={todos}
+                                    setTodos={setTodos}
+                                />
+                            ))
+                        ) : (
+                            <div className="text-center h-full text-gray-500 text-lg flex items-center justify-center">
+                                Add a task
+                            </div>
+                        )
+                    ) : (
+                        <div className="h-full flex items-center justify-center">
+                            <TailSpin
+                                className="h-12 w-12 mx-auto"
+                                stroke="#3482F6"
+                                speed={0.75}
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {/* Footer with logout button */}
@@ -125,7 +136,12 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
             event.preventDefault();
             setLoading(true);
             // Checks to make sure the user didn't only input white space
-            if (!(inputs["taskname"].replace(/\s/g, "") && (inputs["description"].replace(/\s/g, "")))) {
+            if (
+                !(
+                    inputs["taskname"].replace(/\s/g, "") &&
+                    inputs["description"].replace(/\s/g, "")
+                )
+            ) {
                 setErrorMessage("Missing Required Data");
                 setLoading(false);
                 return;
