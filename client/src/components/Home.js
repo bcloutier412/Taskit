@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLoaderData } from "react-router-dom";
 import axios from "axios";
 import { TailSpin } from "react-loading-icons";
+import React from "react";
 
 const Home = () => {
     // Getting user data from local storage processed in the loader function
@@ -25,7 +26,6 @@ const Home = () => {
                     },
                 });
                 setTodos(response.data);
-                console.log(response.data);
             } catch (error) {
                 localStorage.clear();
                 navigate("/login");
@@ -55,18 +55,14 @@ const Home = () => {
                 </nav>
 
                 {/* Todo list */}
-                <div className="md:px-10 h-full overflow-y-scroll">
+                <div className="pl-[20px] h-full overflow-y-scroll">
                     {todos ? (
                         todos.length > 0 ? (
-                            todos.map((todo) => (
-                                <Todo
-                                    key={todo.id}
-                                    todo={todo}
-                                    currentUser={currentUser}
-                                    todos={todos}
-                                    setTodos={setTodos}
-                                />
-                            ))
+                            <Todos
+                                currentUser={currentUser}
+                                todos={todos}
+                                setTodos={setTodos}
+                            />
                         ) : (
                             <div className="text-center h-full text-gray-500 text-lg flex items-center justify-center">
                                 Add a task
@@ -119,7 +115,7 @@ const Home = () => {
 };
 
 const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
-    const [inputs, setInputs] = useState({ taskname: "", description: "" });
+    const [inputs, setInputs] = useState({ taskname: "", description: "", date: "" });
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
 
@@ -129,6 +125,20 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
             ...inputs,
             [event.target.name]: value,
         });
+
+        // const options = {
+        //     month: "long",
+        //     day: "numeric",
+        //     year: "numeric"
+        // }
+        // const today = new Date().toLocaleDateString("en-US", options)
+        // const inputDate = new Date(event.target.value+"T00:00").toLocaleDateString("en-US", options)
+        // console.log(new Date().getTime())
+        // console.log(new Date(event.target.value+"T00:00").getTime())
+        // console.log(new Date().getTime() < new Date(event.target.value+"T00:00").getTime())
+        const currentDate = new Date().getTime()
+        let inputTime = new Date(event.target.value).getTime();
+        console.log(inputTime)
     };
 
     const onSubmit = async (event) => {
@@ -190,14 +200,24 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
                     {errorMessage && (
                         <div className="text-red-500">{errorMessage}</div>
                     )}
-                    <input
-                        type="text"
-                        name="taskname"
-                        placeholder="Task name"
-                        className="border rounded-lg px-2 py-1 focus:outline-none focus:border-blue-500 focus:shadow-md transition-shadow my-1"
-                        onChange={handleChange}
-                        value={inputs["taskname"]}
-                    />
+                    <div className="flex justify-between">
+                        <input
+                            type="text"
+                            name="taskname"
+                            placeholder="Task name"
+                            className="border rounded-lg px-2 py-1 focus:outline-none focus:border-blue-500 focus:shadow-md transition-shadow my-1 grow"
+                            onChange={handleChange}
+                            value={inputs["taskname"]}
+                            required
+                        />
+                        <input
+                            type="date"
+                            className="ml-2 px-2 border rounded-lg py-1 focus:outline-none focus:border-blue-500 focus:shadow-md transition-shadow my-1 "
+                            name="date"
+                            value={inputs["date"]}
+                            onChange={handleChange}
+                        />
+                    </div>
                     <textarea
                         id="w3review"
                         name="description"
@@ -228,6 +248,21 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     );
 };
 
+const Todos = ({ currentUser, todos, setTodos }) => {
+    return (
+        <React.Fragment>
+            {todos.map((todo) => (
+                <Todo
+                    key={todo.id}
+                    todo={todo}
+                    currentUser={currentUser}
+                    todos={todos}
+                    setTodos={setTodos}
+                />
+            ))}
+        </React.Fragment>
+    );
+};
 const Todo = ({ todo, currentUser, todos, setTodos }) => {
     const [isFinished, setIsFinished] = useState(todo.finished);
     const handleDelete = () => {

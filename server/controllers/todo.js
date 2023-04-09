@@ -33,7 +33,7 @@ todoRouter.post("/todo", verifyToken, async (request, response) => {
     try {
         const { title, description } = request.body.todo;
 
-        if (!(title.replace(/\s/g, "") && description.replace(/\s/g, ""))) {
+        if (!title.replace(/\s/g, "")) {
             return response
                 .status(400)
                 .send({ error: "Missing required data " });
