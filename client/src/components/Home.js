@@ -259,16 +259,34 @@ const Todos = ({ currentUser, todos, setTodos, mappedTodos }) => {
     });
 
     const sortedMapKeys = Array.from(map.keys()).sort();
+    const formatDate = (date) => {
+        let currentYear = date.getFullYear();
+        let currentMonth;
+        let currentDay;
+        if (date.getMonth() <= 9) {
+            currentMonth = "0" + (date.getMonth() + 1);
+        } else {
+            currentMonth = date.getMonth() + 1;
+        }
 
+        if (date.getDate() <= 9) {
+            currentDay = "0" + date.getDate();
+        } else {
+            currentDay = date.getDate();
+        }
+        console.log(`${currentYear}-${currentMonth}-${currentDay}`)
+        return `${currentYear}-${currentMonth}-${currentDay}`
+    }
     return (
         <React.Fragment>
             {sortedMapKeys.map((key, index) => {
                 const currentTodoGroup = Array.from(map.get(key));
                 const dueDate = key;
-
+                const currentDate = new Date();
+                const currentDateStr = formatDate(currentDate);
                 return (
-                    <div key={key + index}>
-                        <h1 className="px-5 text-sm text-slate-400 font-semibold">{dueDate}</h1>
+                    <div key={key + index} className="first:mt-3">
+                        <h1 className="md:px-5 px-10 text-sm text-slate-400 font-semibold">{dueDate === currentDateStr ? "Today" : dueDate}</h1>
                         {currentTodoGroup.map((todo) => (
                             <Todo
                                 key={todo.id}
@@ -286,7 +304,7 @@ const Todos = ({ currentUser, todos, setTodos, mappedTodos }) => {
 };
 const Todo = ({ todo, currentUser, todos, setTodos }) => {
     const [isFinished, setIsFinished] = useState(todo.finished);
-    
+    const [open, setOpen] = useState(false);
     const handleDelete = () => {
         axios.delete("/api/todo/todo", {
             headers: {
@@ -308,7 +326,7 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
         setIsFinished(!isFinished);
     };
     return (
-        <div className="wrapper border-b py-5 px-10">
+        <div className="wrapper border-b py-5 px-10 last:border-none">
             <div className="flex flex-col">
                 <div className="flex">
                     <button className="shrink-0">
@@ -339,11 +357,11 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
                             </svg>
                         )}
                     </button>
-                    <header className="grow truncate font-semibold text-lg pl-2">
+                    <header className={`grow truncate font-semibold text-lg pl-2 leading-3 ${isFinished && "line-through decoration-blue-500"}`} onClick={() => setOpen(!open)}>
                         {todo.title}
                     </header>
                 </div>
-                <div className="flex justify-between items-end">
+                <div className={`flex justify-between items-end overflow-hidden ${!open && "h-0"}`}>
                     <p>{todo.description}</p>
                     <button
                         className="justify-self-end px-1 border border-red-600 bg-red-400 rounded-lg text-white h-min"
