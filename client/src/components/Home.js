@@ -259,6 +259,7 @@ const Todos = ({ currentUser, todos, setTodos, mappedTodos }) => {
     });
 
     const sortedMapKeys = Array.from(map.keys()).sort();
+
     const formatDate = (date) => {
         let currentYear = date.getFullYear();
         let currentMonth;
@@ -274,9 +275,10 @@ const Todos = ({ currentUser, todos, setTodos, mappedTodos }) => {
         } else {
             currentDay = date.getDate();
         }
-        console.log(`${currentYear}-${currentMonth}-${currentDay}`)
+
         return `${currentYear}-${currentMonth}-${currentDay}`
     }
+
     return (
         <React.Fragment>
             {sortedMapKeys.map((key, index) => {
@@ -357,7 +359,7 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
                             </svg>
                         )}
                     </button>
-                    <header className={`grow truncate font-semibold text-lg pl-2 leading-3 ${isFinished && "line-through decoration-blue-500"}`} onClick={() => setOpen(!open)}>
+                    <header className={`grow truncate font-semibold text-lg pl-2 leading-4 ${isFinished && "line-through decoration-blue-500"}`} onClick={() => setOpen(!open)}>
                         {todo.title}
                     </header>
                 </div>
