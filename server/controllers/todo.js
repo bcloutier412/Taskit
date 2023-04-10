@@ -30,19 +30,22 @@ todoRouter.get("/todos", verifyToken, async (request, response) => {
 });
 
 todoRouter.post("/todo", verifyToken, async (request, response) => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
     try {
-        const { title, description } = request.body.todo;
+        const { title, description, date } = request.body.todo;
 
-        if (!title.replace(/\s/g, "")) {
+        if (!(title.replace(/\s/g, "") && regex.test(date))) {
             return response
                 .status(400)
                 .send({ error: "Missing required data " });
         }
+
         // Creating new note object for db
         const todo = new Todo({
             title,
             description,
             finished: false,
+            date: date,
             user: request.user.id,
         });
 

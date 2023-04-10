@@ -1,10 +1,11 @@
 POST http://localhost:3001/api/todo/todo
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpbm8xYyIsImlkIjoiNjQyMjE4ZTQyMTllMGQyNzZkZjE1MThhIiwiaWF0IjoxNjgwNTg0OTU3LCJleHAiOjE2ODA1ODU1NTd9.Yox61wgiel_ej3P0Xf7KOM0OonWUbhEAQkgtmA5wJKs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpbm8xYyIsImlkIjoiNjQyMjE4ZTQyMTllMGQyNzZkZjE1MThhIiwiaWF0IjoxNjgxMDkzNTgzLCJleHAiOjE2ODEwOTQxODN9.YnUuid7gKneCr1qPNUgmg5QA8Pn3kn80KVbJR0TFAo4
 Content-Type: application/json
 
 {
     "todo": {
         "title": "Taskit Project",
-        "description": "I need to create the client side of the Taskit application"
+        "description": "I need to create the client side of the Taskit application",
+        "date": "2001-4-04"
     }
 }

@@ -115,7 +115,11 @@ const Home = () => {
 };
 
 const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
-    const [inputs, setInputs] = useState({ taskname: "", description: "", date: "" });
+    const [inputs, setInputs] = useState({
+        taskname: "",
+        description: "",
+        date: "",
+    });
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
 
@@ -125,20 +129,17 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
             ...inputs,
             [event.target.name]: value,
         });
-
-        // const options = {
-        //     month: "long",
-        //     day: "numeric",
-        //     year: "numeric"
+        // const currentDate = new Date();
+        // const currentDateStr = `${currentDate.getFullYear()}-0${currentDate.getMonth() + 1}-0${currentDate.getDate()}`;
+        // console.log(event.target.value)
+        // console.log(currentDateStr)
+        // if (event.target.value > currentDateStr) {
+        //     console.log("You still got some time")
+        // } else if (event.target.value < currentDateStr) {
+        //     console.log("It is past due")
+        // } else {
+        //     console.log("due today")
         // }
-        // const today = new Date().toLocaleDateString("en-US", options)
-        // const inputDate = new Date(event.target.value+"T00:00").toLocaleDateString("en-US", options)
-        // console.log(new Date().getTime())
-        // console.log(new Date(event.target.value+"T00:00").getTime())
-        // console.log(new Date().getTime() < new Date(event.target.value+"T00:00").getTime())
-        const currentDate = new Date().getTime()
-        let inputTime = new Date(event.target.value).getTime();
-        console.log(inputTime)
     };
 
     const onSubmit = async (event) => {
@@ -146,12 +147,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
             event.preventDefault();
             setLoading(true);
             // Checks to make sure the user didn't only input white space
-            if (
-                !(
-                    inputs["taskname"].replace(/\s/g, "") &&
-                    inputs["description"].replace(/\s/g, "")
-                )
-            ) {
+            if (!inputs["taskname"].replace(/\s/g, "")) {
                 setErrorMessage("Missing Required Data");
                 setLoading(false);
                 return;
@@ -162,6 +158,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
                     todo: {
                         title: inputs["taskname"],
                         description: inputs["description"],
+                        date: inputs["date"],
                     },
                 },
                 {
@@ -216,6 +213,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
                             name="date"
                             value={inputs["date"]}
                             onChange={handleChange}
+                            required
                         />
                     </div>
                     <textarea
@@ -249,6 +247,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
 };
 
 const Todos = ({ currentUser, todos, setTodos }) => {
+    
     return (
         <React.Fragment>
             {todos.map((todo) => (
