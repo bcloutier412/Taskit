@@ -115,13 +115,10 @@ const Home = () => {
 };
 
 const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
-  const currentDate = new Date();
-  const currentDateStr = formatDate(currentDate);
-
   const [inputs, setInputs] = useState({
     taskname: "",
     description: "",
-    date: currentDateStr,
+    date: formatDate(new Date()),
   });
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -138,7 +135,7 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
       event.preventDefault();
       setLoading(true);
       // Checks to make sure the user didn't only input white space
-      if (!inputs["taskname"].replace(/\s/g, "")) {
+      if (!inputs["taskname"].trim()) {
         setErrorMessage("Missing Required Data");
         setLoading(false);
         return;

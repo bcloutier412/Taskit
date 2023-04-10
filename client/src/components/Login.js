@@ -22,7 +22,7 @@ const Login = () => {
         setLoading(true);
         try {
             // Checks to make sure the user didn't only input white space
-            if (!(inputs["username"].replace(/\s/g, "") && (inputs["password"].replace(/\s/g, "")))) {
+            if (!(inputs["username"].trim() && (inputs["password"].trim()))) {
                 setErrorMessage("Invalid username or password");
                 setLoading(false);
                 return;
