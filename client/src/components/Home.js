@@ -115,14 +115,16 @@ const Home = () => {
 };
 
 const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
+  const currentDate = new Date();
+  const currentDateStr = formatDate(currentDate);
+
   const [inputs, setInputs] = useState({
     taskname: "",
     description: "",
-    date: "",
+    date: currentDateStr,
   });
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-
   const handleChange = (event) => {
     const value = event.target.value;
     setInputs({
@@ -247,8 +249,10 @@ const Todos = ({ currentUser, todos, setTodos }) => {
   return (
     <React.Fragment>
       {sortedMapKeys.map((key, index) => {
-        const {currentTodoGroup, dueDate, currentDateStr} =
-          getDateInfo(map, key);
+        const { currentTodoGroup, dueDate, currentDateStr } = getDateInfo(
+          map,
+          key
+        );
 
         return (
           <div key={key + index} className="first:mt-3">
