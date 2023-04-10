@@ -246,19 +246,41 @@ const NewTask = ({ setShowAddTask, currentUser, todos, setTodos }) => {
     );
 };
 
-const Todos = ({ currentUser, todos, setTodos }) => {
-    
+const Todos = ({ currentUser, todos, setTodos, mappedTodos }) => {
+    const map = new Map();
+
+    todos.forEach((todo) => {
+        if (map.has(todo.date)) {
+            const mapArray = map.get(todo.date);
+            mapArray.push(todo);
+        } else {
+            map.set(todo.date, [todo]);
+        }
+    });
+
+    const sortedMapKeys = Array.from(map.keys()).sort();
+
     return (
         <React.Fragment>
-            {todos.map((todo) => (
-                <Todo
-                    key={todo.id}
-                    todo={todo}
-                    currentUser={currentUser}
-                    todos={todos}
-                    setTodos={setTodos}
-                />
-            ))}
+            {sortedMapKeys.map((key, index) => {
+                const currentTodoGroup = Array.from(map.get(key));
+                const dueDate = key;
+
+                return (
+                    <div key={key + index}>
+                        <h1 className="px-5 text-sm">{dueDate}</h1>
+                        {currentTodoGroup.map((todo) => (
+                            <Todo
+                                key={todo.id}
+                                todo={todo}
+                                currentUser={currentUser}
+                                todos={todos}
+                                setTodos={setTodos}
+                            />
+                        ))}
+                    </div>
+                );
+            })}
         </React.Fragment>
     );
 };
