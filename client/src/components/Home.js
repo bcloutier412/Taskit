@@ -55,7 +55,7 @@ const Home = () => {
                 </nav>
 
                 {/* Todo list */}
-                <div className="pl-[20px] h-full overflow-y-scroll">
+                <div className="md:pl-[20px] h-full overflow-y-scroll">
                     {todos ? (
                         todos.length > 0 ? (
                             <Todos
@@ -268,7 +268,7 @@ const Todos = ({ currentUser, todos, setTodos, mappedTodos }) => {
 
                 return (
                     <div key={key + index}>
-                        <h1 className="px-5 text-sm">{dueDate}</h1>
+                        <h1 className="px-5 text-sm text-slate-400 font-semibold">{dueDate}</h1>
                         {currentTodoGroup.map((todo) => (
                             <Todo
                                 key={todo.id}
@@ -286,6 +286,7 @@ const Todos = ({ currentUser, todos, setTodos, mappedTodos }) => {
 };
 const Todo = ({ todo, currentUser, todos, setTodos }) => {
     const [isFinished, setIsFinished] = useState(todo.finished);
+    
     const handleDelete = () => {
         axios.delete("/api/todo/todo", {
             headers: {

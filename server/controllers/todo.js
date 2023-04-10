@@ -95,7 +95,7 @@ todoRouter.put("/todo", verifyToken, async (request, response) => {
         const user = request.user;
         const { todoID, isFinished } = request.body;
 
-        if (!(todoID && isFinished))
+        if (!(todoID))
             return response
                 .status(400)
                 .send({ error: "Missing required data " });
