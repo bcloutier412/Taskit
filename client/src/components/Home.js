@@ -38,7 +38,7 @@ const Home = () => {
     <div className="wrapper w-full h-full flex justify-center">
       <div className="container max-w-2xl flex flex-col h-full">
         {/* NavBar */}
-        <nav className="flex justify-between px-10 py-5 border-b h-min">
+        <nav className="flex justify-between px-10 py-5 h-min">
           <header className="text-2xl font-semibold">Tasks</header>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -252,7 +252,7 @@ const Todos = ({ currentUser, todos, setTodos }) => {
         );
 
         return (
-          <div key={key + index} className="first:mt-3">
+          <div key={key + index} className="">
             <TodoDateGroup
               dueDate={dueDate}
               currentDateStr={currentDateStr}
@@ -278,8 +278,12 @@ const TodoDateGroup = ({
 }) => {
   return (
     <React.Fragment>
-      <h1 className="md:px-5 px-10 text-sm text-slate-400 font-semibold">
-        {dueDate === currentDateStr ? "Today" : dueDate}
+      <h1>
+        {dueDate === currentDateStr ? (
+          <TaskSeparator text={"Today"} />
+        ) : (
+          <TaskSeparator text={dueDate} />
+        )}
       </h1>
       {currentTodoGroup.map((todo) => (
         <Todo
@@ -294,6 +298,15 @@ const TodoDateGroup = ({
   );
 };
 
+const TaskSeparator = ({ text }) => {
+  return (
+    <div className="flex items-center">
+      <div className="h-[1px] w-[30px] bg-slate-200"></div>
+      <div className="mx-[10px] text-sm text-slate-300 font-semibold">{text}</div>
+      <div className="h-[1px] grow-[9.5] bg-slate-200"></div>
+    </div>
+  );
+};
 const Todo = ({ todo, currentUser, todos, setTodos }) => {
   const [isFinished, setIsFinished] = useState(todo.finished);
   const [open, setOpen] = useState(false);
@@ -318,7 +331,7 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
     setIsFinished(!isFinished);
   };
   return (
-    <div className="wrapper border-b py-5 px-10 last:border-none">
+    <div className="wrapper border-b border-dashed py-5 px-10 last:border-none">
       <div className="flex flex-col">
         <div className="flex">
           <button className="shrink-0">
