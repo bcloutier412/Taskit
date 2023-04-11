@@ -39,7 +39,7 @@ const Home = () => {
       <div className="container max-w-2xl flex flex-col h-full">
         {/* NavBar */}
         <nav className="flex justify-between px-10 py-5 h-min">
-          <header className="text-2xl font-semibold">Tasks</header>
+          <header className="text-2xl font-semibold">Taskit</header>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -302,11 +302,14 @@ const TaskSeparator = ({ text }) => {
   return (
     <div className="flex items-center">
       <div className="h-[1px] w-[30px] bg-slate-200"></div>
-      <div className="mx-[10px] text-sm text-slate-300 font-semibold">{text}</div>
+      <div className="mx-[10px] text-sm text-slate-300 font-semibold">
+        {text}
+      </div>
       <div className="h-[1px] grow-[9.5] bg-slate-200"></div>
     </div>
   );
 };
+
 const Todo = ({ todo, currentUser, todos, setTodos }) => {
   const [isFinished, setIsFinished] = useState(todo.finished);
   const [open, setOpen] = useState(false);
@@ -370,15 +373,29 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
           >
             {todo.title}
           </header>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            onClick={() => setOpen(!open)}
+            className={`bi bi-chevron-up mr-[8px] ${open && "rotate-180"} transition-transform duration-200`}
+            viewBox="0 0 16 16"
+          >
+            <path
+              fillRule="evenodd"
+              d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
+            />
+          </svg>
         </div>
         <div
-          className={`flex justify-between items-end overflow-hidden ${
-            !open && "h-0"
+          className={`flex justify-between items-end overflow-hidden transition-all ease-linear duration-300 max-h-0 ${
+            open && "max-h-[10000px]"
           }`}
         >
-          <p>{todo.description}</p>
+          <p className="my-3">{todo.description}</p>
           <button
-            className="justify-self-end px-1 border border-red-600 bg-red-400 rounded-lg text-white h-min"
+            className="justify-self-end px-1 border border-red-600 bg-red-400 rounded-lg text-white h-min mt-3"
             onClick={handleDelete}
           >
             delete
