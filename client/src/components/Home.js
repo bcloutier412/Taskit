@@ -319,7 +319,7 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
   useEffect(() => {
     const height = heightRef.current.offsetHeight;
     setDescHeight(height);
-  }, [])
+  }, []);
 
   const handleDelete = () => {
     axios.delete("/api/todo/todo", {
@@ -377,7 +377,7 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
 
           {/* Title of the Todo */}
           <header
-            className={`grow truncate font-semibold text-lg pl-2 leading-4 ${
+            className={`grow truncate font-semibold text-lg pl-2 ${
               isFinished && "line-through decoration-blue-500"
             }`}
             onClick={() => setOpen(!open)}
@@ -386,30 +386,35 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
           </header>
 
           {/* Accordion arrow button */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            onClick={() => setOpen(!open)}
-            className={`bi bi-chevron-up mr-[8px] ${
-              open && "rotate-180"
-            } transition-transform duration-200`}
-            viewBox="0 0 16 16"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
-            />
-          </svg>
+          <div className="flex justify-center items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              onClick={() => setOpen(!open)}
+              className={`bi bi-chevron-up mr-[8px] ${
+                open && "rotate-180"
+              } transition-transform duration-200`}
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
+              />
+            </svg>
+          </div>
         </div>
 
         {/* Description of the Todo */}
         <div
           className={`flex justify-between items-end overflow-hidden transition-all ease-linear duration-200`}
-          style={{ maxHeight: `${open ? `${descHeight + 12}px` : '0px'}`}}
+          style={{ maxHeight: `${open ? `${descHeight + 12}px` : "0px"}` }}
         >
-          <p className="mt-3 grow text-ellipsis overflow-hidden min-h-[24px]" ref={heightRef}>
+          <p
+            className="mt-3 grow text-ellipsis overflow-hidden min-h-[24px]"
+            ref={heightRef}
+          >
             {todo.description}
           </p>
           <button
