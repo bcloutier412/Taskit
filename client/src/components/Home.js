@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { useNavigate, useLoaderData } from "react-router-dom";
 import axios from "axios";
 import { TailSpin } from "react-loading-icons";
@@ -313,6 +313,14 @@ const TaskSeparator = ({ text }) => {
 const Todo = ({ todo, currentUser, todos, setTodos }) => {
   const [isFinished, setIsFinished] = useState(todo.finished);
   const [open, setOpen] = useState(false);
+  const heightRef = useRef(null);
+  const [descHeight, setDescHeight] = useState(0);
+
+  useEffect(() => {
+    const height = heightRef.current.offsetHeight;
+    setDescHeight(height);
+  }, [])
+
   const handleDelete = () => {
     axios.delete("/api/todo/todo", {
       headers: {
@@ -337,6 +345,7 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
     <div className="wrapper border-b border-dashed py-5 px-10 last:border-none">
       <div className="flex flex-col">
         <div className="flex">
+          {/* Check box button */}
           <button className="shrink-0">
             {isFinished ? (
               <svg
@@ -365,6 +374,8 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
               </svg>
             )}
           </button>
+
+          {/* Title of the Todo */}
           <header
             className={`grow truncate font-semibold text-lg pl-2 leading-4 ${
               isFinished && "line-through decoration-blue-500"
@@ -373,13 +384,17 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
           >
             {todo.title}
           </header>
+
+          {/* Accordion arrow button */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
             fill="currentColor"
             onClick={() => setOpen(!open)}
-            className={`bi bi-chevron-up mr-[8px] ${open && "rotate-180"} transition-transform duration-200`}
+            className={`bi bi-chevron-up mr-[8px] ${
+              open && "rotate-180"
+            } transition-transform duration-200`}
             viewBox="0 0 16 16"
           >
             <path
@@ -388,14 +403,17 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
             />
           </svg>
         </div>
+
+        {/* Description of the Todo */}
         <div
-          className={`flex justify-between items-end overflow-hidden transition-all ease-linear duration-300 max-h-0 ${
-            open && "max-h-[10000px]"
-          }`}
+          className={`flex justify-between items-end overflow-hidden transition-all ease-linear duration-200`}
+          style={{ maxHeight: `${open ? `${descHeight + 12}px` : '0px'}`}}
         >
-          <p className="my-3">{todo.description}</p>
+          <p className="mt-3 grow text-ellipsis overflow-hidden min-h-[24px]" ref={heightRef}>
+            {todo.description}
+          </p>
           <button
-            className="justify-self-end px-1 border border-red-600 bg-red-400 rounded-lg text-white h-min mt-3"
+            className="justify-self-end px-1 border border-red-600 bg-red-400 rounded-lg text-white h-min mt-3 ml-3"
             onClick={handleDelete}
           >
             delete
