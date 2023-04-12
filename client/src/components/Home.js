@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLoaderData } from "react-router-dom";
 import axios from "axios";
 import { TailSpin } from "react-loading-icons";
@@ -342,9 +342,12 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
     setIsFinished(!isFinished);
   };
   return (
-    <div className="wrapper border-b border-dashed py-5 px-10 last:border-none">
+    <div
+      className="wrapper border-b border-dashed py-5 px-10 last:border-none"
+      onClick={() => setOpen(!open)}
+    >
       <div className="flex flex-col">
-        <div className="flex">
+        <div className="flex ">
           {/* Check box button */}
           <button className="shrink-0">
             {isFinished ? (
@@ -355,7 +358,10 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
                 fill="currentColor"
                 className="bi bi-check-circle fill-blue-500"
                 viewBox="0 0 16 16"
-                onClick={handleFinishedClick}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  handleFinishedClick();
+                }}
               >
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                 <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
@@ -368,7 +374,10 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
                 fill="currentColor"
                 className="bi bi-circle"
                 viewBox="0 0 16 16"
-                onClick={handleFinishedClick}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  handleFinishedClick();
+                }}
               >
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
               </svg>
@@ -380,7 +389,6 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
             className={`grow truncate font-semibold text-lg pl-2 ${
               isFinished && "line-through decoration-blue-500"
             }`}
-            onClick={() => setOpen(!open)}
           >
             {todo.title}
           </header>
@@ -392,7 +400,6 @@ const Todo = ({ todo, currentUser, todos, setTodos }) => {
               width="16"
               height="16"
               fill="currentColor"
-              onClick={() => setOpen(!open)}
               className={`bi bi-chevron-up mr-[8px] ${
                 open && "rotate-180"
               } transition-transform duration-200`}
