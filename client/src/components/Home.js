@@ -299,7 +299,7 @@ const TodoDateGroup = ({
                             ? "Today"
                             : dueDate === "0000-00-00"
                             ? "Past Due"
-                            : dueDate
+                            : formatDueDate(dueDate)
                     }
                 />
             </h1>
@@ -479,5 +479,22 @@ const formatDate = (date) => {
 
     return `${currentYear}-${currentMonth}-${currentDay}`;
 };
-
+const formatDueDate = (text) => {
+  const dateArray = text.split('-');
+  const months = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec'
+  }
+  return `${parseInt(dateArray[2])} ${months[parseInt(dateArray[1])]} ${parseInt(dateArray[0])}`;
+}
 export default Home;
