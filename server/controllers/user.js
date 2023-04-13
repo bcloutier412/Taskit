@@ -90,7 +90,7 @@ const createJWTToken = (user) => {
         id: user.id,
     };
     const token = JWT.sign(userForToken, config.SECRET, {
-        expiresIn: "10min",
+        expiresIn: "30d",
     });
     return token;
 };
