@@ -333,11 +333,11 @@ const TaskSeparator = ({
         onClick={() => {
           setAllOpen(!allOpen);
         }}
-        className={`text-sm border rounded-lg px-2 border-slate-300 mx-[5px] ${allOpen ? "text-blue-500" : "text-slate-300"}`}
+        className={`text-sm border rounded-lg px-4 py-[1px] border-slate-300 mx-[5px] ${allOpen ? "text-blue-500" : "text-slate-300"}`}
       >
         {allOpen ? "Close" : "Show"}
       </button>
-      <div className={`h-[1px] w-[25px] ${bgColor}`}></div>
+      <div className={`h-[1px] w-[17px] ${bgColor}`}></div>
     </div>
   );
 };
