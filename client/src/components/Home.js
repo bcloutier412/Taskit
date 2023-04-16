@@ -337,7 +337,7 @@ const TaskSeparator = ({
       >
         {allOpen ? "Close" : "Show"}
       </button>
-      <div className={`h-[1px] w-[17px] ${bgColor}`}></div>
+      <div className={`h-[1px] w-[18px] ${bgColor}`}></div>
     </div>
   );
 };

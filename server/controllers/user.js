@@ -13,7 +13,7 @@ userRouter.post("/register", async (request, response) => {
 
     try {
         // If the user already exists send an error to the client
-        let result = await User.findOne({ username });
+        let result = await User.findOne({ username: username.toLowerCase() });
 
         if (result)
             return response
@@ -22,7 +22,7 @@ userRouter.post("/register", async (request, response) => {
 
         // Create a new user object and save that user to the database
         const newUser = new User({
-            username,
+            username: username.toLowerCase(),
             name,
             passwordHash: await bcrypt.hash(password, 10),
         });
@@ -53,7 +53,7 @@ userRouter.post("/login", async (request, response) => {
 
     try {
         // Look for username in the database
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username: username.toLowerCase() });
 
         if (!user)
             return response

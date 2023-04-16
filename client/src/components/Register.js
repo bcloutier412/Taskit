@@ -31,7 +31,7 @@ const Login = () => {
                 return;
             }
             const data = {
-                username: inputs["username"],
+                username: inputs["username"].toLowerCase(),
                 password: inputs["password"],
                 name: inputs["name"],
             };
